@@ -11,7 +11,7 @@ size = MPI.COMM_WORLD.size
 rank = MPI.COMM_WORLD.rank
 
 # Get number of HWthreads and Cores
-blocked = True
+blocked = False
 cores = psutil.cpu_count(logical=False)
 hwthreads = psutil.cpu_count(logical=True)
 

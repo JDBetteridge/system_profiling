@@ -37,7 +37,7 @@ perfect = [c*single_channel/(2**30) for c in channels]
 # ~ ax.plot([0], [0], 'ko')
 ax.plot(channels, perfect, 'k:')
 ax.plot([channels[-1], cores[-1]], [perfect[-1], perfect[-1]], 'k:')
-ax.plot(cores, results/(2**10), 'x-')
+ax.plot(cores, [r/(2**10) for r in results], 'x-')
 if args.title:
     ax.set_title(str(args.title))
 else:
