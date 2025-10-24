@@ -1,14 +1,22 @@
 import ctypes
 import psutil
+from math import log10
+
+from pprint import pprint
+try:
+    from mpi4py import MPI
+except (RuntimeError, ImportError):
+    MPI = None
 
 from draw import get_current
-from math import log10
-from mpi4py import MPI
-from pprint import pprint
 
-# MPI Get global communicator size and rank
-size = MPI.COMM_WORLD.size
-rank = MPI.COMM_WORLD.rank
+if MPI is None:
+    size = 1
+    rank = 0
+else:
+    # MPI Get global communicator size and rank
+    size = MPI.COMM_WORLD.size
+    rank = MPI.COMM_WORLD.rank
 
 # Get number of HWthreads and Cores
 blocked = False
@@ -50,9 +58,14 @@ factor = 10**(-dp)
 thread_num = [round(rank + factor*t, dp) for t in thread_num]
 cpu_num = list(cpu_num)
 
-tn = MPI.COMM_WORLD.gather(thread_num, root=0)
-cn = MPI.COMM_WORLD.gather(cpu_num, root=0)
-an = MPI.COMM_WORLD.gather(affinity, root=0)
+if size > 1:
+    tn = MPI.COMM_WORLD.gather(thread_num, root=0)
+    cn = MPI.COMM_WORLD.gather(cpu_num, root=0)
+    an = MPI.COMM_WORLD.gather(affinity, root=0)
+else:
+    tn = [thread_num]
+    cn = [cpu_num]
+    an = [affinity]
 
 if rank == 0:
     print('SIZE    RANK.THREAD    CPU_NUM     AFFINITY')
