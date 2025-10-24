@@ -222,7 +222,7 @@ class CPUDrawing(object):
         return self
 
 
-def get_current(max_cores, max_threads):
+def get_current(max_cores, max_threads, nthreads):
     cpu = lscpu()
     # ~ pprint(cpu)
     sockets = cpu['Socket(s)']
@@ -232,7 +232,7 @@ def get_current(max_cores, max_threads):
 
     offset = 0
     core_digits = int(log10(max_cores)) + 1
-    thread_digits = int(log10(max_threads)) + 1
+    thread_digits = int(log10(nthreads)) + 1
 
     for _ in range(sockets):
         cpu_list.append(CPUDrawing(cores,

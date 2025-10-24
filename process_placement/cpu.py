@@ -80,7 +80,7 @@ if rank == 0:
 
     max_cores = hwthreads
     max_threads = max([len(v) for v in core_dict.values()])
-    cpu_list = get_current(max_cores, max_threads)
+    cpu_list = get_current(max_cores, max_threads, nthreads)
     pprint(core_dict)
     output = [c.format(core_dict) for c in cpu_list]
     print()
